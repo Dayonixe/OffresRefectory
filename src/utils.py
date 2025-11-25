@@ -1,6 +1,5 @@
 from datetime import datetime
 import requests
-from playwright.sync_api import sync_playwright
 from .parser import (
     parse_offer_dates,
     extract_code,

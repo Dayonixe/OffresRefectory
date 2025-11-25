@@ -18,6 +18,7 @@ Team : Théo Pirouelle
 > | --- | --- |
 > | playwright | 1.56.0 |
 > | bs4 | 0.0.2 |
+> | requests | 2.32.5 |
 > | pytest | 9.0.1 |
 
 Please also remember to install Python. The code was developed and works with Python 3.10.12.
