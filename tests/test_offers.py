@@ -89,7 +89,7 @@ def test_extract_discount(text, expected):
 @pytest.mark.parametrize("text,expected", [
     ("Offre valable à Toulouse uniquement", ["Toulouse"]),
     ("Uniquement à Paris et Lyon", ["Paris", "Lyon"]),
-    ("Offre nationale sans ville", ["Général"]),
+    ("Offre nationale sans ville", ["Global"]),
 ])
 def test_extract_cities_multiple(text, expected):
     assert extract_cities(text) == expected
