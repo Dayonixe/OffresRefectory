@@ -1,5 +1,5 @@
 import pytest
-from src.extract_offers import (
+from src.parser import (
     parse_french_date,
     parse_offer_dates,
     extract_code,
