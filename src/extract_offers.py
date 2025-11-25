@@ -12,31 +12,31 @@ def main():
         print("🔍 Loading page...")
         page.goto(URL, wait_until="networkidle")
 
-        # 1) Accepter les cookies si la bannière apparaît
+        # Accept cookies if the banner appears
         try:
             page.locator("text=Tout accepter").first.click(timeout=2000)
             print("✅ Cookies accepted")
         except:
             print("🔍 No cookie banner detected")
 
-        # 2) Attendre que le vrai contenu ('Offres en cours') soit visible
+        # Wait until the actual content ('Offres en cours') is visible
         print("🔍 Waiting for content to load...")
         page.wait_for_selector("h2", timeout=10000)
 
-        # 3) Récupérer le HTML final
+        # Retrieve the final HTML
         html = page.content()
         browser.close()
 
     # Extraction via BeautifulSoup
     soup = BeautifulSoup(html, "html.parser")
 
-    # Trouver la section contenant les offres
+    # Find the section containing the offers
     offers_block = soup.find("h2", string=lambda t: t and "Offres" in t)
     if not offers_block:
         print("❌ Unable to find offers on the page!")
         return
 
-    container = offers_block.find_parent()  # remonte au bloc
+    container = offers_block.find_parent()  # Go back to the block
     text = container.get_text("\n", strip=True)
 
     offers = analyze_offers(text)
