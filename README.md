@@ -65,3 +65,16 @@ remise: 1€
 villes: ['Avelin']
 montant_minimum: 7€90
 ```
+
+---
+
+## To retrieve notifications
+
+First, simply install the ntfy app from the [Play Store](https://play.google.com/store/apps/details?id=io.heckel.ntfy) or the [App Store](https://apps.apple.com/us/app/ntfy/id1625396347).
+
+- Enter the topic `prawse-refectory-alerts`
+- Leave `Use another server` unchecked
+- Leave `Instant delivery in doze mode` unchecked
+- Click on `Subscribe`
+
+Now you will receive all notifications about new general offers and offers in the Toulouse region!
