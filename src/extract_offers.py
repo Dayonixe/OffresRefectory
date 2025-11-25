@@ -1,6 +1,6 @@
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
-from .parser import analyze_offers
+from .utils import (analyze_offers, filter_and_notify)
 
 URL = "https://www.refectory.fr/conditions-des-offres-en-cours"
 
@@ -45,6 +45,8 @@ def main():
         print("\n--- OFFER ---")
         for k, v in o.items():
             print(f"{k}: {v}")
+
+    filter_and_notify(offers)
 
 if __name__ == "__main__":
     main()

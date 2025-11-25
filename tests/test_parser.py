@@ -5,9 +5,9 @@ from src.parser import (
     extract_code,
     extract_discount,
     extract_cities,
-    extract_min_amount,
-    analyze_offers
+    extract_min_amount
 )
+from src.utils import analyze_offers
 
 
 
