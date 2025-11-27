@@ -53,6 +53,15 @@ def parse_offer_dates(text: str) -> tuple[datetime | None, datetime | None]:
             datetime(year, int(m2), int(d2)),
         )
 
+    # "Du 01/12/2025 au 19/12/2025" format
+    m3 = re.search(r"Du\s+(\d{1,2})/(\d{1,2})/(\d{4})\s+au\s+(\d{1,2})/(\d{1,2})/(\d{4})", text)
+    if m3:
+        d1, m1, y1, d2, m2, y2 = m3.groups()
+        return (
+            datetime(int(y1), int(m1), int(d1)),
+            datetime(int(y2), int(m2), int(d2)),
+        )
+
     return None, None
 
 
@@ -64,7 +73,7 @@ def extract_code(text: str) -> str | None:
 
     :return: The promotional code found or None if none is detected
     """
-    m = re.search(r"\b([A-Z0-9]{4,})\b", text)
+    m = re.search(r"\b([A-Z][A-Z0-9]{3,})\b", text)
     return m.group(1) if m else None
 
 

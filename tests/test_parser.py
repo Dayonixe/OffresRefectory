@@ -46,6 +46,20 @@ def test_parse_offer_dates_valid(text, start_day, end_day, start_month, end_mont
     assert end.month == end_month
 
 
+@pytest.mark.parametrize("text,start_day,start_month,start_year,end_day,end_month,end_year", [
+    ("Du 01/12/2025 au 19/12/2025", 1, 12, 2025, 19, 12, 2025),
+    ("Du 7/1/2030 au 9/1/2030", 7, 1, 2030, 9, 1, 2030),
+])
+def test_parse_offer_dates_with_year(text, start_day, start_month, start_year, end_day, end_month, end_year):
+    start, end = parse_offer_dates(text)
+    assert start.year == start_year
+    assert end.year == end_year
+    assert start.month == start_month
+    assert end.month == end_month
+    assert start.day == start_day
+    assert end.day == end_day
+
+
 def test_parse_offer_dates_invalid():
     s, e = parse_offer_dates("Pas une date du tout")
     assert s is None and e is None
@@ -61,6 +75,13 @@ def test_parse_offer_dates_invalid():
     ("1€ offert avec le code ABCDEF", "ABCDEF"),
     ("aucun code ici", None),
     ("Utilisez le code SUPERMEGA123", "SUPERMEGA123"),
+    ("L'année 2025 sera incroyable", None),
+    ("Votre code: A1234 fonctionne", "A1234"),
+    ("Voici un code mixte: Z9Z9Z9", "Z9Z9Z9"),
+    ("code promo: abc123", None),
+    ("Numéro de facture: 123456", None),
+    ("Le code MEGA est valable", "MEGA"),
+    ("Utilisez les codes ABC123 ou XYZ789", "ABC123")
 ])
 def test_extract_code(text, expected):
     assert extract_code(text) == expected

@@ -7,6 +7,7 @@ from .parser import (
     extract_cities,
     extract_min_amount
 )
+from .parser import KNOWN_CITIES
 
 
 def analyze_offers(full_text: str) -> list[dict]:
@@ -96,7 +97,8 @@ def send_ntfy(topic: str, title: str, message: str, priority: int = 3) -> None:
     url = f"https://ntfy.sh/{topic}"
     headers = {
         "Title": title,
-        "Priority": str(priority)
+        "Priority": str(priority),
+        "Tags": "tada"
     }
     requests.post(url, data=message.encode("utf-8"), headers=headers)
 
@@ -111,14 +113,32 @@ def filter_and_notify(offers: list[dict]) -> None:
         if not offer["encore_valide"]:
             continue
 
-        villes = offer["villes"]
-        if villes != ["Global"] and "Toulouse" not in villes:
-            continue
+        print("")
 
-        titre = "🎉 Nouvelle offre Refectory !"
+        villes = offer["villes"]
+
+        # Determining destinations
+        if villes == ["Global"]:
+            topics = (
+                [f"prawse-refectory-alerts"] +
+                [f"prawse-refectory-alerts-{v.lower()}" for v in KNOWN_CITIES]
+            )
+        else:
+            topics = (
+                ["prawse-refectory-alerts"] +
+                [f"prawse-refectory-alerts-{v.lower()}" for v in villes]
+            )
+
+        # Preparation of notification content
+        titre = "Nouvelle offre Refectory !"
+
+        if offer["date_fin"]:
+            date_fin_str = offer["date_fin"].strftime('%d/%m')
+        else:
+            date_fin_str = "inconnue"
 
         details = [
-            f"Offre valable jusqu’au {offer['date_fin'].strftime('%d/%m')}",
+            f"Offre valable jusqu’au {date_fin_str}",
             f"Ville(s) : {', '.join(villes)}",
         ]
 
@@ -137,7 +157,8 @@ def filter_and_notify(offers: list[dict]) -> None:
 
         message = "\n".join(details)
 
-        # Notification
-        send_ntfy("prawse-refectory-alerts", titre, message)
+        # Notification to all topics
+        for topic in topics:
+            send_ntfy(topic, titre, message)
 
-        print("\n✅ Notification sent!")
+            print(f"✅ Notification sent → {topic}")
