@@ -46,7 +46,10 @@ def main():
         for k, v in o.items():
             print(f"{k}: {v}")
 
-    filter_and_notify(offers)
+    try:
+        filter_and_notify(offers)
+    except Exception as e:
+        print(f"⚠️ Erreur lors des notifications : {e}")
 
 if __name__ == "__main__":
     main()
