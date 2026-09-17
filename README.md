@@ -42,6 +42,17 @@ For the complete installation of playwright, you may need to supplement it with 
 playwright install --with-deps
 ```
 
+## Tests and extraction diagnostics
+
+After installing the dependencies and Chromium, run `python -m pytest tests/`.
+The browser tests use simulated pages and requests; they do not contact Refectory
+or send notifications.
+
+The export retries navigation and content-loading failures up to three times.
+If all attempts fail, the CI run includes an `extract-offers-diagnostics` artifact
+with the final URL, HTTP status when available, error, page HTML and screenshot
+(when capture succeeds). This artifact is retained for seven days.
+
 ---
 
 ## Usage

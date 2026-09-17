@@ -23,6 +23,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r config/requirements.txt
 
+    - name: Install Chromium for extraction tests
+      run: python -m playwright install --with-deps chromium
+
     - name: Run tests
       run: |
         pytest tests/
@@ -46,10 +49,17 @@ jobs:
         pip install -r config/requirements.txt
 
     - name: Install Playwright
-      run: |
-        pip install playwright
-        playwright install --with-deps
+      run: python -m playwright install --with-deps chromium
 
     - name: Run export script
       run: |
         python -m src.extract_offers
+
+    - name: Upload extraction diagnostics
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: extract-offers-diagnostics
+        path: artifacts/extract-offers/
+        if-no-files-found: ignore
+        retention-days: 7

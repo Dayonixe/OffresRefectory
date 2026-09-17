@@ -24,6 +24,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r config/requirements.txt
 
+    - name: Install Chromium for extraction tests
+      run: python -m playwright install --with-deps chromium
+
     - name: Run tests
       run: |
         pytest tests/
